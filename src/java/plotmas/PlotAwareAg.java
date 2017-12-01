@@ -8,7 +8,12 @@ import jason.asSemantics.AffectiveAgent;
 import jason.asSemantics.Emotion;
 import jason.asSemantics.Mood;
 import jason.asSemantics.Option;
+import jason.asSyntax.LiteralImpl;
+import jason.asSyntax.Plan;
+import jason.asSyntax.PlanBody;
+import jason.asSyntax.PlanBody.BodyType;
 import jason.asSyntax.Pred;
+import jason.asSyntax.Term;
 import plotmas.graph.PlotGraph;
 import plotmas.graph.Vertex;
 import plotmas.helper.MoodMapper;
@@ -23,8 +28,6 @@ public class PlotAwareAg extends AffectiveAgent {
         super.initAg();
         this.name = this.getTS().getUserAgArch().getAgName();
     }
-        
-        
         
 	@Override
     public void addEmotion(Emotion emotion, String type) throws JasonException {
@@ -51,10 +54,30 @@ public class PlotAwareAg extends AffectiveAgent {
 		Option opt = super.selectOption(options);
 		if(!(opt == null) & (!(null == opt.getPlan().getLabel()))) {
 			Pred label = opt.getPlan().getLabel();
-			if(!(label.getAnnots("isIntention").isEmpty())) {
-				PlotGraph.getPlotListener().addEvent(this.name, label.getFunctor(), Vertex.Type.EVENT);
+			
+			boolean containsPlan = false;
+			Plan p = opt.getPlan();
+			BodyType type = p.getBody().getBodyType();
+			if(type.toString().contains("!"))
+				containsPlan=true;
+			
+			PlanBody nextStep = p.getBody().getBodyNext();
+			while(!(null == nextStep) & !containsPlan) {
+				type = nextStep.getBodyType();
+				if(type.toString().contains("!"))
+					containsPlan=true;
+				nextStep = nextStep.getBodyNext();
+			} 
+
+			if(containsPlan) {
+				PlotGraph.getPlotListener().addEvent(this.name, p.toASString(), Vertex.Type.EVENT);
 				logger.info(this.name + " added plan: " + label.getFunctor());
+				
 			}
+//			if(!(label.getAnnots("isIntention").isEmpty())) {
+//				PlotGraph.getPlotListener().addEvent(this.name, label.getFunctor(), Vertex.Type.EVENT);
+//				logger.info(this.name + " added plan: " + label.getFunctor());
+//			}
 		}
 		
 		return opt;

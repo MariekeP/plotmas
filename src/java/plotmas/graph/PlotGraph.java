@@ -42,7 +42,7 @@ public class PlotGraph {
 	}
 	
 	public void addEvent(String character, String event) {
-		this.addEvent(character, event, Vertex.Type.EVENT, Edge.Type.TEMPORAL);
+		this.addEvent(character, event, Vertex.Type.ACTION, Edge.Type.TEMPORAL);
 	}
 
 	public void addEvent(String character, String event, Vertex.Type eventType) {
@@ -50,7 +50,7 @@ public class PlotGraph {
 	}
 	
 	public void addEvent(String character, String event, Edge.Type linkType) {
-		this.addEvent(character, event, Vertex.Type.EVENT, linkType);
+		this.addEvent(character, event, Vertex.Type.ACTION, linkType);
 	}
 	
 	public void addEvent(String character, String event, Vertex.Type eventType, Edge.Type linkType) {

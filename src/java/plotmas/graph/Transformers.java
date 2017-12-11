@@ -61,10 +61,10 @@ public class Transformers {
         	switch (v.getType()) {
 	        	case ROOT:
 	        		return PlotGraph.BGCOLOR;
-	        	case SPEECHACT:
-	        		return Color.getHSBColor(Float.valueOf("0"), Float.valueOf("0"), Float.valueOf("0.95"));
+	        	case INTENTION:
+	        		return Color.LIGHT_GRAY;
         		default:
-        			return Color.LIGHT_GRAY;
+        			return Color.getHSBColor(Float.valueOf("0"), Float.valueOf("0"), Float.valueOf("0.95"));
         	}
         }
     };

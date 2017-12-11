@@ -3,7 +3,7 @@ package plotmas.graph;
 import java.util.UUID;
 
 public class Vertex {
-	public enum Type { ROOT, EVENT, EMOTION, SPEECHACT }
+	public enum Type { ROOT, ACTION, EMOTION, SPEECHACT, INTENTION }
 
 	private String id;
 	private String label;
@@ -15,7 +15,7 @@ public class Vertex {
 	}
 
 	public Vertex(String label) {
-		this(label, Vertex.Type.EVENT);
+		this(label, Vertex.Type.ACTION);
 	}
 	
 	public Vertex(String label, Type type) {

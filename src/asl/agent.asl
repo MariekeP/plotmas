@@ -18,14 +18,14 @@ obligation(farm_work).
 /********************************************/
 /*****      Common sense reasoning ************/
 /********************************************/
-@share_food_plan[atomic, affect(personality(agreeableness,medium), mood(pleasure,high))]
+@share_food__1[atomic, affect(personality(agreeableness,medium), mood(pleasure,high)), isIntention]
 +has(X) : is_pleasant(eat(X)) & has(X) <- 			// still has X when event selected
 	?agents(Anims);
 	!share(X, Anims);
 	.print("Shared: ", X, " with the others");
 	!eat(X).
 	
-@share_food_plan2[atomic, affect(personality(agreeableness,high), mood(pleasure,positive))]
+@share_food__2[atomic, affect(personality(agreeableness,high), mood(pleasure,positive)), isIntention]
 +has(X) : is_pleasant(eat(X)) & has(X) <- 			// still has X when event selected
 	?agents(Anims);
 	!share(X, Anims);
@@ -71,7 +71,7 @@ obligation(farm_work).
 /*****      Personality *********************/
 /********************************************/
 
-@general_help_acquisition_plan[affect(personality(extraversion, high))]
+@get_help[affect(personality(extraversion, high)), isIntention]
 +!X[_] : is_work(X) & not already_asked(X) <-
 	?agents(Animals);
 	+already_asked(X);
@@ -83,17 +83,18 @@ obligation(farm_work).
 	.suspend(X);
 	!X.
 
-@default_activity_1[affect(personality(conscientiousness,high))]
+@default_activity__1[affect(personality(conscientiousness,high)), isIntention]
 +!default_activity <-
 	?obligation(X);
 	!X;
 	!default_activity.
 	
-@default_activity_2[affect(personality(conscientiousness,low))]
+@default_activity__2[affect(personality(conscientiousness,low)), isIntention]
 +!default_activity <-
 	!relax;
 	!default_activity.
 
+@default_activity__3[isIntention]
 +!default_activity <-
 	.random(R);
 	if(R>0.5) {
@@ -119,7 +120,7 @@ obligation(farm_work).
 +!punished(L) : punished(L) <- true.
 
 // insert all actual punishment plans
-@punished_plan[atomic]	
+@punish[atomic, isIntention]	
 +!punished(_) : mood(hostile) & has(X) & is_pleasant(eat(X)) <-
 	?affect_target(Anims);
 	if (.empty(Anims)) {
@@ -145,6 +146,7 @@ obligation(farm_work).
 /***** Plans  *******************************/
 /********************************************/
 
+@create_bread[isIntention]
 +!create_bread : has(wheat(seed)) <-
 	+self(has_purpose);
 	!plant(wheat);
@@ -175,27 +177,33 @@ obligation(farm_work).
 +!farm_work <-
 	farm_work.
 
+@plant[isIntention]
 +!plant(wheat) <-
 	plant(wheat).
 	
+@tend[isIntention]
 +!tend(wheat) <-
 	tend(wheat).
 	
+@harvest[isIntention]
 +!harvest(wheat) <-
 	harvest(wheat).
 
+@grind[isIntention]
 +!grind(wheat) <-
 	grind(wheat).
 
+@bake[isIntention]
 +!bake(bread) <-
 	bake(bread).
 
-@eat1_plan[atomic]	
+@eat__1[atomic,isIntention]	
 +!eat(X) : has(X) <- 
 	eat(X);
 	-has(X);
 	.succeed_goal(eat(X)).
 	
+@eat__2[isIntention]	
 +!eat(X) <- 
 	.print("Can't eat ", X, ", I don't have any! :( ");
 	.appraise_emotion(disappointment);

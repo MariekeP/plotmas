@@ -52,7 +52,8 @@ public class PlotAwareAg extends AffectiveAgent {
 		if(!(opt == null) & (!(null == opt.getPlan().getLabel()))) {
 			Pred label = opt.getPlan().getLabel();
 			if(!(label.getAnnots("isIntention").isEmpty())) {
-				PlotGraph.getPlotListener().addEvent(this.name, label.getFunctor(), Vertex.Type.EVENT);
+				String planName = label.getFunctor().split("__")[0];			// remove index for plans with same name
+				PlotGraph.getPlotListener().addEvent(this.name, planName, Vertex.Type.INTENTION);
 				logger.info(this.name + " added plan: " + label.getFunctor());
 			}
 		}
